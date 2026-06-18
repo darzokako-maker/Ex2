@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build
+      run: msbuild MultiProjectSolution.sln /p:Configuration=Release /p:Platform=x64
+
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: Output
+        path: |
+          x64/Release/*.exe
+          x64/Release/*.dll
+          
